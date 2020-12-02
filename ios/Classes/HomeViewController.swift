@@ -75,7 +75,7 @@ class HomeViewController: UIViewController, HRQRCodeScanToolDelegate {
            let width: CGFloat                          = 300
            HRQRCodeScanTool.shared.isDrawQRCodeRect    = true
            HRQRCodeScanTool.shared.drawRectColor       = UIColor.purple
-           HRQRCodeScanTool.shared.drawRectLineWith    = 5
+           HRQRCodeScanTool.shared.drawRectLineWith    = 1
            HRQRCodeScanTool.shared.setInterestRect(originRect: CGRect(x:(view.frame.size.width - width) * 0.5, y: (view.frame.size.height - width) * 0.5, width: width, height: width))
            HRQRCodeScanTool.shared.delegate            = self
            HRQRCodeScanTool.shared.centerHeight        = 200
@@ -88,6 +88,11 @@ class HomeViewController: UIViewController, HRQRCodeScanToolDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+            super.viewDidDisappear(animated)
+            HRQRCodeScanTool.shared.stopScan()
+        }
 }
 
 
