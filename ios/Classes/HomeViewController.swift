@@ -50,19 +50,73 @@ class HomeViewController: UIViewController, HRQRCodeScanToolDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        view.backgroundColor = UIColor.white
-//        let title = UILabel()
-//        title.text = "测试"
-//        title.frame = CGRect(x: 0, y: 100, width: 100, height: 100)
-//        view.addSubview(title)
-//        let scanBtn = UIButton(type: UIButton.ButtonType.infoDark)
-//        scanBtn.setTitle("button", for: UIControl.State.normal)
-//        scanBtn.frame = CGRect(x: 0, y: 200,width: 150 ,height: 100)
-//        scanBtn.backgroundColor = UIColor.green
-//        view.addSubview(scanBtn)
+        // 扫描
+//        setupScanConfig()
+        // 关闭按钮
+        let scanBtn = UIButton(type: UIButton.ButtonType.system)
+        let scanBtnSize = scanBtn.intrinsicContentSize.width * 0.8
+        scanBtn.frame = CGRect(x: 20, y: 80,width: scanBtnSize ,height: scanBtnSize)
+        scanBtn.setTitle("✕", for: UIControl.State.normal)
+        scanBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        scanBtn.setTitleColor(UIColor.black, for: UIControl.State.normal)
+        scanBtn.backgroundColor = UIColor.white
+        scanBtn.layer.cornerRadius = scanBtnSize / 2
+        scanBtn.addTarget(self, action: #selector(close), for: .touchUpInside)
+        view.addSubview(scanBtn)
+        // title
+        let title = UILabel()
+        title.text = "扫一扫"
+        title.adjustsFontSizeToFitWidth = true
+        title.font = UIFont.systemFont(ofSize: 18)
+        title.textColor = UIColor.white
+        let titleSize = title.intrinsicContentSize
+        title.frame = CGRect(x: UIScreen.main.bounds.width / 2 -  titleSize.width / 2, y: 80 + 6  , width: titleSize.width, height: titleSize.height)
+        view.addSubview(title)
+        // 扫码线条
+        let path = UIBezierPath()
+        let startPoint = CGPoint(x: 10, y: 256)
+        path.move(to: startPoint)
+        path.lineWidth = 4
+        path.addLine(to: CGPoint(x: 758, y: 256))
+        path.close()
         
-        setupScanConfig()
+        let line = CAShapeLayer()
+        line.path = path.cgPath;
+        line.strokeColor = UIColor.green.cgColor
+        line.fillColor = UIColor.red.cgColor
         
+        view.layer.addSublayer(line)
+        
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.fromValue = [0, 0]
+        animation.toValue = [0, 300]
+        animation.fillMode = .forwards
+        animation.autoreverses = true
+        animation.repeatCount = MAXFLOAT
+        animation.isRemovedOnCompletion = true
+        animation.duration = 3
+        line.add(animation, forKey: "myanimation")
+    
+        
+        
+        // 提示信息
+        let tips = UILabel()
+        tips.text = "扫二维码 / 条码"
+        tips.adjustsFontSizeToFitWidth = true
+        tips.font = UIFont.systemFont(ofSize: 12)
+        tips.textColor = UIColor.white
+        let lableSize = tips.intrinsicContentSize
+        tips.frame = CGRect(x: UIScreen.main.bounds.width / 2 -  lableSize.width / 2, y: UIScreen.main.bounds.height  * 0.75, width: lableSize.width, height: lableSize.height)
+        view.addSubview(tips)
+        
+        
+        
+        
+    }
+    
+    
+    @objc dynamic func  close() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     func setupScanConfig() {
@@ -73,15 +127,15 @@ class HomeViewController: UIViewController, HRQRCodeScanToolDelegate {
            #endif
            
            let width: CGFloat                          = 300
-           HRQRCodeScanTool.shared.isDrawQRCodeRect    = true
-           HRQRCodeScanTool.shared.drawRectColor       = UIColor.purple
-           HRQRCodeScanTool.shared.drawRectLineWith    = 1
+           HRQRCodeScanTool.shared.isDrawQRCodeRect    = false
+           HRQRCodeScanTool.shared.drawRectColor       = UIColor.green
+           HRQRCodeScanTool.shared.drawRectLineWith    = 3
            HRQRCodeScanTool.shared.setInterestRect(originRect: CGRect(x:(view.frame.size.width - width) * 0.5, y: (view.frame.size.height - width) * 0.5, width: width, height: width))
            HRQRCodeScanTool.shared.delegate            = self
-           HRQRCodeScanTool.shared.centerHeight        = 200
-           HRQRCodeScanTool.shared.centerWidth         = 200
-           HRQRCodeScanTool.shared.isShowMask          = true
-           HRQRCodeScanTool.shared.maskColor           = UIColor.init(white: 0, alpha: 0.2)
+           HRQRCodeScanTool.shared.centerHeight        = 250
+           HRQRCodeScanTool.shared.centerWidth         = 250
+           HRQRCodeScanTool.shared.isShowMask          = false
+           HRQRCodeScanTool.shared.maskColor           = UIColor.init(white: 0, alpha: 0.3)
            HRQRCodeScanTool.shared.beginScanInView(view: view)
        }
     
