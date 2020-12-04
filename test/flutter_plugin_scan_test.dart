@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_plugin_scan/flutter_plugin_scan.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('flutter_plugin_scan');
@@ -18,6 +18,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await FlutterPluginScan.platformVersion, '42');
+    expect(await FlutterPluginScan.startScan, '42');
   });
 }

@@ -16,7 +16,7 @@ public class SwiftFlutterPluginScanPlugin: NSObject, FlutterPlugin {
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     
-    if (call.method == "getPlatformName"){
+    if (call.method == "startScan"){
         let vc = ScanViewController()
         let homeView:UINavigationController = UINavigationController(rootViewController:vc)
         UIApplication.shared.keyWindow?.rootViewController?.present(homeView, animated: true, completion: nil)
