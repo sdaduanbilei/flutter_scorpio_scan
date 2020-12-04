@@ -1,5 +1,6 @@
 package com.scopro.flutter_plugin_scan
 
+import android.content.Intent
 import androidx.annotation.NonNull
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -23,8 +24,9 @@ class FlutterPluginScanPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
+    if (call.method == "startScan") {
+
+      result.success("Android ${android.os.Build.BOARD}")
     } else {
       result.notImplemented()
     }

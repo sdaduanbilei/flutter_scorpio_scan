@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  Future<void> test() async {
+  Future<void> startScan() async {
     FlutterPluginScan.startScan.then((value) {
       setState(() {
         result = value;
@@ -38,7 +38,8 @@ class _MyAppState extends State<MyApp> {
         body: Center(
           child: Column(
             children: [
-              RaisedButton(onPressed: () => test(), child: Text('onPressed')),
+              RaisedButton(
+                  onPressed: () => startScan(), child: Text('onPressed')),
               Text('Scan result: $result\n'),
             ],
           ),
