@@ -16,6 +16,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   String _platformName = 'Unknown';
+  String result;
 
   @override
   void initState() {
@@ -26,7 +27,6 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     String platformVersion;
-    String platformName;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       platformVersion = await FlutterPluginScan.platformVersion;
@@ -47,12 +47,15 @@ class _MyAppState extends State<MyApp> {
 
     setState(() {
       _platformVersion = platformVersion;
-      _platformName = platformName;
     });
   }
 
   Future<void> test() async {
-    await FlutterPluginScan.platformName;
+    FlutterPluginScan.platformName.then((value) {
+      setState(() {
+        result = value;
+      });
+    });
   }
 
   @override
@@ -66,7 +69,8 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             children: [
               Text('Running on: $_platformVersion\n'),
-              RaisedButton(onPressed: () => test(), child: Text('onPressed'))
+              RaisedButton(onPressed: () => test(), child: Text('onPressed')),
+              Text('Scan result: $result\n'),
             ],
           ),
         ),

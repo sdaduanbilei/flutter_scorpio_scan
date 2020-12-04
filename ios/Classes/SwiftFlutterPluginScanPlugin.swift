@@ -1,6 +1,10 @@
 import Flutter
 import UIKit
 
+protocol isAbleToReceiveData {
+  func pass(data: String)  //data: string is an example parameter
+}
+
 public class SwiftFlutterPluginScanPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "flutter_plugin_scan", binaryMessenger: registrar.messenger())
@@ -11,10 +15,14 @@ public class SwiftFlutterPluginScanPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+    
     if (call.method == "getPlatformName"){
-        let homeView:UINavigationController = UINavigationController(rootViewController: HomeViewController())
+        let vc = ScanViewController()
+        let homeView:UINavigationController = UINavigationController(rootViewController:vc)
         UIApplication.shared.keyWindow?.rootViewController?.present(homeView, animated: true, completion: nil)
-        
+        vc.getBlock{(value) in
+            result(value)
+        }
     } else {
         result("iOS " + UIDevice.current.systemVersion)
     }

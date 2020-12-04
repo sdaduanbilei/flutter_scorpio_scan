@@ -7,7 +7,12 @@
 
 import UIKit
 
-class HomeViewController: UIViewController, HRQRCodeScanToolDelegate {
+typealias scanBlock = (String) -> ()
+
+class ScanViewController: UIViewController, HRQRCodeScanToolDelegate {
+    
+    var block : scanBlock?
+    
     func scanQRCodeFaild(error: HRQRCodeTooError) {
         switch error {
                     
@@ -38,20 +43,26 @@ class HomeViewController: UIViewController, HRQRCodeScanToolDelegate {
                     
                 case .OtherError:
                     print("其他错误")
-                    
+                   
                     
                 }
     }
     
     func scanQRCodeSuccess(resultStrs: [String]) {
-        print("扫码成功 + \(resultStrs.first ?? "")")
-
+        if let block = self.block {
+            block(resultStrs.first ?? "")
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    func getBlock(block: scanBlock?){
+        self.block = block ;
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // 扫描
-//        setupScanConfig()
+        setupScanConfig()
         // 关闭按钮
         let scanBtn = UIButton(type: UIButton.ButtonType.system)
         let scanBtnSize = scanBtn.intrinsicContentSize.width * 0.8
@@ -74,16 +85,19 @@ class HomeViewController: UIViewController, HRQRCodeScanToolDelegate {
         view.addSubview(title)
         // 扫码线条
         let path = UIBezierPath()
-        let startPoint = CGPoint(x: 10, y: 256)
+        let startPoint = CGPoint(x: 40, y: 256)
         path.move(to: startPoint)
-        path.lineWidth = 4
-        path.addLine(to: CGPoint(x: 758, y: 256))
+        path.addLine(to: CGPoint(x: UIScreen.main.bounds.size.width - 40, y: 256))
+        path.lineCapStyle = .round
         path.close()
+        
         
         let line = CAShapeLayer()
         line.path = path.cgPath;
         line.strokeColor = UIColor.green.cgColor
         line.fillColor = UIColor.red.cgColor
+        line.lineWidth = 2
+        line.lineCap = .round
         
         view.layer.addSublayer(line)
         
@@ -94,7 +108,7 @@ class HomeViewController: UIViewController, HRQRCodeScanToolDelegate {
         animation.autoreverses = true
         animation.repeatCount = MAXFLOAT
         animation.isRemovedOnCompletion = true
-        animation.duration = 3
+        animation.duration = 2
         line.add(animation, forKey: "myanimation")
     
         
