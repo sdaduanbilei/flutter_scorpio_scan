@@ -9,7 +9,8 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView
 class CustomCaptureManager(private val activity: Activity, barcodeView: DecoratedBarcodeView) : CaptureManager(activity, barcodeView) {
     override fun returnResult(rawResult: BarcodeResult?) {
         super.returnResult(rawResult)
-        ResultDataManager().getInstance()?.setBarCodeResult(rawResult!!);
+        Log.d("CustomCaptureManager", "returnResult: ${rawResult.toString()}")
+        ResultDataManager.getInstance()!!.setBarCodeResult(rawResult!!)
         this.activity.finish();
     }
 }

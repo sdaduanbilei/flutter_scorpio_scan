@@ -21,11 +21,16 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> startScan() async {
-    FlutterPluginScan.startScan.then((value) {
-      setState(() {
-        result = value;
-      });
+    FlutterPluginScan scan = FlutterPluginScan().setFlutterPluginScan((codeString) => {
+      debugPrint("flutter $codeString"),
+      setState((){
+        if (codeString.toString().isNotEmpty){
+          result = codeString ;
+        }
+      })
     });
+    scan.startScan;
+
   }
 
   @override
